@@ -15,11 +15,13 @@ enum Enviroment {
 var enviroment: Enviroment = .prod
 
 enum ApiRequestPath {
-    case allMovies
+    case upcoming
+    case topRated
     
     var subPath: String {
         switch self {
-        case .allMovies: return "list/1"
+        case .upcoming: return "list/1"
+        case .topRated: return "list/2"
         }
     }
     
@@ -27,7 +29,7 @@ enum ApiRequestPath {
         if enviroment == .dev { return "https://api.themoviedb.org/4/" } 
         
         switch self {
-        case .allMovies: return "https://api.themoviedb.org/4/"
+        case .upcoming, .topRated: return "https://api.themoviedb.org/4/"
         }
     }
 }

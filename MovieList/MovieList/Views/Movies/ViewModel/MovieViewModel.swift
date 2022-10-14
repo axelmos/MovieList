@@ -21,8 +21,17 @@ extension MovieViewModel: MovieProtocol {
         return _movies ?? []
     }
     
-    func getAllMovies(sortBy: String, page: Int, completion: @escaping () -> (), failure: @escaping (String) -> ()) {
-        service.getAllMovies(sortBy: sortBy, page: page) { [weak self] data in
+    func getUpcomingMovies(sortBy: String, page: Int, completion: @escaping () -> (), failure: @escaping (String) -> ()) {
+        service.getUpcomingMovies(sortBy: sortBy, page: page) { [weak self] data in
+            self?._movies = data
+            completion()
+        } failure: { error in
+            failure(error)
+        }
+    }
+    
+    func getTopRatedMovies(sortBy: String, page: Int, completion: @escaping () -> (), failure: @escaping (String) -> ()) {
+        service.getTopRatedMovies(sortBy: sortBy, page: page) { [weak self] data in
             self?._movies = data
             completion()
         } failure: { error in

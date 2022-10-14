@@ -10,5 +10,7 @@ import Foundation
 protocol MovieProtocol {
     var movies: [Movie] { get }
     
-    func getAllMovies(sortBy: String, page: Int, completion: @escaping () -> (), failure: @escaping (String) -> ())
+    func getUpcomingMovies(sortBy: String, page: Int, completion: @escaping () -> (), failure: @escaping (String) -> ())
+    
+    func getTopRatedMovies(sortBy: String, page: Int, completion: @escaping () -> (), failure: @escaping (String) -> ())
 }
