@@ -20,16 +20,16 @@ enum ApiRequestPath {
     
     var subPath: String {
         switch self {
-        case .upcoming: return "list/1"
-        case .topRated: return "list/2"
+        case .upcoming: return Constants.Services.upcoming
+        case .topRated: return Constants.Services.topRated
         }
     }
     
     var basePath: String {
-        if enviroment == .dev { return "https://api.themoviedb.org/4/" } 
+        if enviroment == .dev { return Constants.Services.baseURL }
         
         switch self {
-        case .upcoming, .topRated: return "https://api.themoviedb.org/4/"
+        case .upcoming, .topRated: return Constants.Services.baseURL
         }
     }
 }

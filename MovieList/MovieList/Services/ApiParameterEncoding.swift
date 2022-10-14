@@ -19,6 +19,6 @@ struct ApiParameterEncoding {
     }
     
     func encodingType() -> String {
-        return "application/json"
+        return Constants.Services.encodingType
     }
 }

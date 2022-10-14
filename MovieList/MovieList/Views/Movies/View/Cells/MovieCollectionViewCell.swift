@@ -13,7 +13,7 @@ class MovieCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView?
     
     func populate(_ movie: Movie) {
-        if let url = URL.init(string: "https://image.tmdb.org/t/p/w500\(movie.poster_path)") {
+        if let url = URL.init(string: "\(Constants.Services.imageURL)\(movie.poster_path)") {
             imageView?.sd_setImage(with: url, completed: {_,_,_,_ in
                 DispatchQueue.main.async {
                     self.activityIndicator?.stopAnimating()

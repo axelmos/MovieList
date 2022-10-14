@@ -18,7 +18,7 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let url = URL.init(string: "https://image.tmdb.org/t/p/w500\(movie.poster_path)") {
+        if let url = URL.init(string: "\(Constants.Services.imageURL)\(movie.poster_path)") {
             imageView?.sd_setImage(with: url)
         }
         

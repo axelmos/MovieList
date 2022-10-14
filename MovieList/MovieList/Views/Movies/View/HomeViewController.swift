@@ -89,9 +89,9 @@ class HomeViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case Sections.UPCOMING.rawValue:
-            return "PRÓXIMOS ESTRENOS"
+            return Constants.Titles.upcomingHeader
         case Sections.TOP_RATED.rawValue:
-            return "TENDENCIA"
+            return Constants.Titles.topRatedHeader
         default:
             return ""
         }
