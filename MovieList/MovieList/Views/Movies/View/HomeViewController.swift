@@ -34,7 +34,7 @@ class HomeViewController: UITableViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        /*if NetworkHelper.isConnectedToNetwork() {
+        if NetworkHelper.isConnectedToNetwork() {
             isPersistedData = false
             getUpcomingAndTopRatedMovies()
         } else {
@@ -44,13 +44,6 @@ class HomeViewController: UITableViewController {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
-        }*/
-        
-        isPersistedData = true
-        storedTopRatedMovies = CoreDataManager.shared.getStoredMovies(isTopRated: true)
-        storedUpcomingMovies = CoreDataManager.shared.getStoredMovies()
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
         }
     }
     
