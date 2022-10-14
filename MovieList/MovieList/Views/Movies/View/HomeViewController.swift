@@ -30,10 +30,7 @@ class HomeViewController: UITableViewController {
 
         let cellNib = UINib(nibName: "MoviesTableViewCell", bundle: nil)
         tableView.register(cellNib, forCellReuseIdentifier: "MoviesTableViewCell")
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        
         if NetworkHelper.isConnectedToNetwork() {
             isPersistedData = false
             getUpcomingAndTopRatedMovies()
