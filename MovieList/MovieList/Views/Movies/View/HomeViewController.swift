@@ -20,7 +20,8 @@ class HomeViewController: UITableViewController {
     lazy var topRatedViewModel:MovieProtocol = {
          return MovieViewModel()
     }()
-    private var storedMovies: [Movie] = [Movie]()
+    private var storedTopRatedMovies: [Movie] = [Movie]()
+    private var storedUpcomingMovies: [Movie] = [Movie]()
     private var isPersistedData: Bool = false
     private var selectedMovie: Movie?
     
@@ -33,9 +34,23 @@ class HomeViewController: UITableViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if NetworkHelper.isConnectedToNetwork() {
+        /*if NetworkHelper.isConnectedToNetwork() {
             isPersistedData = false
             getUpcomingAndTopRatedMovies()
+        } else {
+            isPersistedData = true
+            storedTopRatedMovies = CoreDataManager.shared.getStoredMovies(isTopRated: true)
+            storedUpcomingMovies = CoreDataManager.shared.getStoredMovies()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }*/
+        
+        isPersistedData = true
+        storedTopRatedMovies = CoreDataManager.shared.getStoredMovies(isTopRated: true)
+        storedUpcomingMovies = CoreDataManager.shared.getStoredMovies()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
     }
     
@@ -45,6 +60,10 @@ class HomeViewController: UITableViewController {
         upcomingViewModel.getUpcomingMovies(sortBy: "title.asc", page: 1) {
             DispatchQueue.main.async {
                 self.tableView.reloadSections(IndexSet(integer: Sections.UPCOMING.rawValue), with: .fade)
+                
+                if CoreDataManager.shared.deleteAllMovies() {
+                    CoreDataManager.shared.saveMovies(movies: self.upcomingViewModel.movies)
+                }
             }
             self.getTopRatedMovies()
         } failure: { error in
@@ -56,6 +75,8 @@ class HomeViewController: UITableViewController {
         topRatedViewModel.getTopRatedMovies(sortBy: "title.asc", page: 1) {
             DispatchQueue.main.async {
                 self.tableView.reloadSections(IndexSet(integer: Sections.TOP_RATED.rawValue), with: .fade)
+                
+                CoreDataManager.shared.saveMovies(movies: self.topRatedViewModel.movies, isTopRated: true)
             }
         } failure: { error in
             print(error)
@@ -83,28 +104,13 @@ class HomeViewController: UITableViewController {
         }
     }
     
-    /*override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = tableView.dequeueReusableCell(withIdentifier: "HeaderTableViewCell") as! HeaderTableViewCell
-        
-        switch section {
-        case Sections.UPCOMING.rawValue:
-            view.titleLabel?.text = "PRÓXIMOS ESTRENOS"
-        case Sections.TOP_RATED.rawValue:
-            view.titleLabel?.text = "TENDENCIA"
-        default:
-            break
-        }
-        
-        return view
-    }*/
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "MoviesTableViewCell", for: indexPath) as? MoviesTableViewCell {
             cell.delegate = self
             switch indexPath.section {
             case Sections.UPCOMING.rawValue:
                 if isPersistedData {
-                    cell.populate(storedMovies)
+                    cell.populate(storedUpcomingMovies)
                 } else {
                     if upcomingViewModel.movies.count > 0 {
                         cell.populate(upcomingViewModel.movies)
@@ -112,7 +118,7 @@ class HomeViewController: UITableViewController {
                 }
             case Sections.TOP_RATED.rawValue:
                 if isPersistedData {
-                    cell.populate(storedMovies)
+                    cell.populate(storedTopRatedMovies)
                 } else {
                     if topRatedViewModel.movies.count > 0 {
                         cell.populate(topRatedViewModel.movies)
@@ -126,12 +132,6 @@ class HomeViewController: UITableViewController {
         }
         
         return UITableViewCell()
-    }
-    
-    // MARK: - UITableView Delegate
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
     }
     
     // MARK: - Navigation
