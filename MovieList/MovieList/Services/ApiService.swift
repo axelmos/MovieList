@@ -15,8 +15,8 @@ class ApiService {
                    failure: @escaping (ApiError) -> Void) {
         
         let headers = [
-          "Content-Type": "application/json;charset=utf-8",
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhYmI3MWQ2MmZjYmI1ODA1M2U2MWNlYjViYTg0ZDcxMCIsInN1YiI6IjYzNDcxNGY2ZmU1YzkxMDA3ZWQxZjlhZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.7u1z18ZgPDefN4FB6I8JuAr4u7w0hM_M9mCk2n93mF8"
+            "Content-Type": Constants.Services.contentType,
+            "Authorization": Constants.Services.authorization
         ]
         
         var urlString = ""
